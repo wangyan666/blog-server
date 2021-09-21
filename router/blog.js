@@ -12,7 +12,6 @@ let router = express.Router()
 // 获取博客列表
 router.get('/list', auth, (req, res, next) => {
   let { author = '', keyword = '' } = req.query
-
   getList(author, keyword)
   .then((val) => {
     let data = val

@@ -13,6 +13,7 @@ export default (req, res, next) => {
   jwt.verify(token, 'bfqadrsz')
   .then((decodedToken) => {
     // console.log(decodedToken)
+    req.userInfo = decodedToken.data
     next()
   })
   .catch(err => {
