@@ -2,7 +2,7 @@ import express from 'express'
 import jwt from '../utils/jwt.js'
 
 // 引入controller
-import { userLogin, userInfo } from '../controller/user.js'
+import { userLogin, getUserInfo } from '../controller/user.js'
 // 引入resModel
 import { SuccessModel, ErrorModel } from '../model/resModel.js'
 // 引入token验证中间件
@@ -16,10 +16,10 @@ router.post('/login',(req, res, next) => {
   let { username = '', password = '' } = req.body
   userLogin(username, password)
   .then((val) => {
-    let data = val[0] || {}
+    let data = JSON.parse(JSON.stringify(val[0])) || {}
     if (data.username) {
       // 设置token
-      jwt.sign({data}, 'bfqadrsz', { expiresIn: 60 * 3 })
+      jwt.sign(data, 'bfqadrsz', { expiresIn: 60 * 30 })
       .then( token => {
         res.send(new SuccessModel({token}))
       })
@@ -31,9 +31,9 @@ router.post('/login',(req, res, next) => {
 
 // 获取用户信息接口
 router.get('/userInfo', auth, (req, res, next) => {
-  let username = req.userInfo.username
+  let username = req.username
   // console.log(username)
-  userInfo(username)
+  getUserInfo(username)
   .then(val => {
     let data = val[0] || {}
     res.send(new SuccessModel(data))

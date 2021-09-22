@@ -11,7 +11,7 @@ import exec from "../db/connect.js"
 
 
 // 用户信息获取
-const userInfo = (username)=> {
+const getUserInfo = (username)=> {
   let sql = `select avator from userinfo where username = '${username}'`
 
   return exec(sql)
@@ -21,4 +21,4 @@ const userInfo = (username)=> {
 
 
 
-export { userLogin, userInfo }
+export { userLogin, getUserInfo }

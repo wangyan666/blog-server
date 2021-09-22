@@ -1,7 +1,7 @@
 import express from 'express'
 
 // 引入controller
-import { getList, getDetail, newBlog, updateBlog, deleteBlog } from '../controller/blog.js'
+import { getList, getDetail, newBlog, updateBlog, deleteBlog, getBlogNumber } from '../controller/blog.js'
 // 引入resModel
 import { SuccessModel, ErrorModel } from '../model/resModel.js'
 // 引入 token 验证中间件
@@ -11,9 +11,10 @@ let router = express.Router()
 
 // 获取博客列表
 router.get('/list', auth, (req, res, next) => {
-  let { author = '', keyword = '' } = req.query
-  getList(author, keyword)
+  let { page = 1, pagesize = 8, state } = req.query
+  getList(page, pagesize, state)
   .then((val) => {
+    // console.log(val)
     let data = val
     res.send(new SuccessModel(data))
   })  
@@ -66,6 +67,17 @@ router.get('/list', auth, (req, res, next) => {
       let data = (val.affectedRows > 0)
       if(data) res.send(new SuccessModel)
       else res.send(new ErrorModel('删除博客失败'))
+    })
+  })
+
+  // 获取博客总数目
+  router.get('/blogNumber',(req, res, next) => {
+    getBlogNumber()
+    .then((val) => {
+      let data = val[0]
+      // console.log(data)
+      // console.log(typeof data)
+      res.send(new SuccessModel(data))
     })
   })
 

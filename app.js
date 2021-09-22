@@ -3,6 +3,7 @@ import express from 'express'
 // 引入路由
 import blogRouter from './router/blog.js'
 import userRouter from './router/user.js'
+import refreshRouter from './router/refresh.js'
 
 // 中间件
 import morgan from 'morgan' // 日志输出
@@ -23,11 +24,12 @@ app.use(express.json())
 // 使用路由
 app.use('/api/blog', blogRouter)
 app.use('/api/user', userRouter)
+app.use('/api', refreshRouter)
 
 
 // 处理 404
 app.use((req, res, next) => {
-  res.status(404).send('页面丢失啦！')
+  res.status(404).send('出了点状况！404')
 })
 
 // 错误处理

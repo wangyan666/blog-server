@@ -1,9 +1,10 @@
 import exec from "../db/connect.js"
 
-const getList = ( author, keyword) => {
-  let sql = 'select * from blogs where 1=1 '
-  if (author) sql += `and author = '${author}'`
-  if (keyword) sql += `and title like = '%${keyword}%'`
+const getList = ( page, pagesize, state) => {
+  let sql = `select * from blogs `
+  if (state) sql += `where state = ${state} `
+  sql += `LIMIT ${ (page-1) * pagesize }, ${pagesize} `
+  console.log(sql)
   //返回promise
   return exec(sql)
 }
@@ -39,4 +40,10 @@ const deleteBlog = (id) => {
   return exec(sql)
 }
 
-export { getList, getDetail, newBlog, updateBlog, deleteBlog }
+// 获取博客总数
+const getBlogNumber = () => {
+  let sql = `select COUNT(*) from blogs `
+  return exec(sql)
+}
+
+export { getList, getDetail, newBlog, updateBlog, deleteBlog, getBlogNumber }

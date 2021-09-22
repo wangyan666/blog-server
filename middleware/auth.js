@@ -12,8 +12,8 @@ export default (req, res, next) => {
   }
   jwt.verify(token, 'bfqadrsz')
   .then((decodedToken) => {
-    // console.log(decodedToken)
-    req.userInfo = decodedToken.data
+    console.log(decodedToken)
+    req.username = decodedToken.username
     next()
   })
   .catch(err => {
