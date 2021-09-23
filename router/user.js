@@ -19,7 +19,7 @@ router.post('/login',(req, res, next) => {
     let data = JSON.parse(JSON.stringify(val[0])) || {}
     if (data.username) {
       // 设置token
-      jwt.sign(data, 'bfqadrsz', { expiresIn: 60 * 30 })
+      jwt.sign(data, 'bfqadrsz', { expiresIn: 60 * 60 * 4 })
       .then( token => {
         res.send(new SuccessModel({token}))
       })

@@ -1,10 +1,12 @@
 import exec from "../db/connect.js"
 
-const getList = ( page, pagesize, state) => {
-  let sql = `select * from blogs `
-  if (state) sql += `where state = ${state} `
+const getList = ( page, pagesize, state, date1, date2) => {
+  let sql = `select * from blogs where 1=1 `
+  if (state) sql += `and state = ${state} `
+  if (date1) sql += `and createtime >= ${date1} `
+  if (date2) sql += `and createtime <= ${date2} `
   sql += `LIMIT ${ (page-1) * pagesize }, ${pagesize} `
-  console.log(sql)
+  // console.log(sql)
   //返回promise
   return exec(sql)
 }
@@ -41,8 +43,11 @@ const deleteBlog = (id) => {
 }
 
 // 获取博客总数
-const getBlogNumber = () => {
-  let sql = `select COUNT(*) from blogs `
+const getBlogNumber = (state, date1, date2) => {
+  let sql = `select COUNT(*) from blogs where 1=1 `
+  if(state) sql += `and state = ${state} `
+  if (date1) sql += `and createtime >= ${date1} `
+  if (date2) sql += `and createtime <= ${date2} `
   return exec(sql)
 }
 
