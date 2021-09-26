@@ -36,14 +36,18 @@ router.get('/list', auth, (req, res, next) => {
 
 // 新建一篇博客
   router.post('/draw',(req, res, next) => {
-    req.body.author = 'zhangsan'
-    let blogData = req.body
+    // req.body.author = 'zhangsan'
+    // console.log(req.body.blogData)
+    // console.log('-=-=-=-=-=--==-=--=-=---')
+    let blogData = req.body.blogData
     // console.log(blogData)
     newBlog(blogData)
     .then((val) => {
       let data = {}
       data.id = val.insertId 
       res.send(new SuccessModel(data))
+    }).catch(err => {
+      res.status(500).send('添加数据失败')
     })
   })
 
