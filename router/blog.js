@@ -21,9 +21,10 @@ router.get('/list', auth, (req, res, next) => {
 })
 
 // 获取某篇博客详情
-  router.get('/detail', (req, res, next) => {
+  router.get('/detail/:id', (req, res, next) => {
     try {
-      let id = req.query.id
+      let id = req.params.id
+      console.log(id)
       getDetail(id)
       .then((val) => {
         let data = val
@@ -53,8 +54,9 @@ router.get('/list', auth, (req, res, next) => {
 
   // 更新博客
   router.post('/update',(req, res, next) => {
-    let blogData = req.body
-    let id = req.query.id || ''
+    let blogData = req.body.blogData
+    // console.log(req.body)
+    let id = blogData.id || ''
     updateBlog(id, blogData)
     .then((val) => {
       let data = (val.affectedRows > 0)
@@ -64,7 +66,7 @@ router.get('/list', auth, (req, res, next) => {
   })
 
   // 删除博客
-  router.post('/delete',(req, res, next) => {
+  router.delete('/delete',(req, res, next) => {
     let id = req.query.id || ''
     deleteBlog(id)
     .then((val) => {

@@ -5,7 +5,7 @@ const getList = ( page, pagesize, state, date1, date2) => {
   if (state) sql += `and state = ${state} `
   if (date1) sql += `and createtime >= ${date1} `
   if (date2) sql += `and createtime <= ${date2} `
-  sql += `LIMIT ${ (page-1) * pagesize }, ${pagesize} `
+  sql += `LIMIT ${ (page-1) * pagesize }, ${ pagesize } `
   // console.log(sql)
   //返回promise
   return exec(sql)
@@ -32,6 +32,7 @@ const updateBlog = ( id, blogData ) => {
   let sql = `
     update blogs set title = '${title}', content = '${content}', createTime = '${createTime}' where id = ${id}
   `
+  // console.log(sql)
   return exec(sql)
 }
 
