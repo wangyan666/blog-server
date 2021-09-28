@@ -11,8 +11,8 @@ let router = express.Router()
 
 // 获取博客列表
 router.get('/list', auth, (req, res, next) => {
-  let { page = 1, pagesize = 8, state = null, date1 = null, date2 = null } = req.query
-  getList(page, pagesize, state, date1, date2)
+  let { page = 1, pagesize = 6, state = null, date1 = null, date2 = null, channel = null } = req.query
+  getList(page, pagesize, state, date1, date2, channel)
   .then((val) => {
     // console.log(val)
     let data = val
@@ -78,8 +78,8 @@ router.get('/list', auth, (req, res, next) => {
 
   // 获取博客总数目
   router.get('/blogNumber',(req, res, next) => {
-    let { state = null, date1 = null, date2 = null } = req.query
-    getBlogNumber(state, date1, date2)
+    let { state = null, date1 = null, date2 = null, channel = null } = req.query
+    getBlogNumber(state, date1, date2, channel)
     .then((val) => {
       let data = val[0]
       // console.log(data)

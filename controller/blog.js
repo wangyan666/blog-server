@@ -1,8 +1,9 @@
 import exec from "../db/connect.js"
 
-const getList = ( page, pagesize, state, date1, date2) => {
+const getList = ( page, pagesize, state, date1, date2, channel) => {
   let sql = `select * from blogs where 1=1 `
   if (state) sql += `and state = ${state} `
+  if (channel) sql += `and channel = ${channel} `
   if (date1) sql += `and createtime >= ${date1} `
   if (date2) sql += `and createtime <= ${date2} `
   sql += `LIMIT ${ (page-1) * pagesize }, ${ pagesize } `
@@ -17,20 +18,21 @@ const getDetail = (id) => {
 }
 
 const newBlog = ( blogData ) => {
-  let { title, content, author } = blogData
+  let { title, content, author, channel } = blogData
   let createTime = Date.now()
   let sql = `
-    insert into blogs (title, content, author, createTime)
-    values ('${title}', '${content}', '${author}', '${createTime}')
+    insert into blogs (title, content, author, createTime, channel)
+    values ('${title}', '${content}', '${author}', '${createTime}', '${channel}')
   `
+  // console.log(sql)
   return exec(sql)
 }
 
 const updateBlog = ( id, blogData ) => {
-  let { title, content } = blogData
+  let { title, content, channel } = blogData
   let createTime = Date.now()
   let sql = `
-    update blogs set title = '${title}', content = '${content}', createTime = '${createTime}' where id = ${id}
+    update blogs set title = '${title}', content = '${content}', createTime = '${createTime}', channel = '${channel}' where id = ${id}
   `
   // console.log(sql)
   return exec(sql)
@@ -44,11 +46,13 @@ const deleteBlog = (id) => {
 }
 
 // 获取博客总数
-const getBlogNumber = (state, date1, date2) => {
+const getBlogNumber = (state, date1, date2, channel) => {
   let sql = `select COUNT(*) from blogs where 1=1 `
   if(state) sql += `and state = ${state} `
+  if (channel) sql += `and channel = ${channel} `
   if (date1) sql += `and createtime >= ${date1} `
   if (date2) sql += `and createtime <= ${date2} `
+  // console.log(sql)
   return exec(sql)
 }
 
