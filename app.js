@@ -5,6 +5,7 @@ import blogRouter from './router/blog.js'
 import userRouter from './router/user.js'
 import refreshRouter from './router/refresh.js'
 import uploadRouter from './router/upload.js'
+import imageRouter from './router/image.js'
 
 // 中间件
 import morgan from 'morgan' // 日志输出
@@ -14,7 +15,7 @@ import cors from 'cors' // 跨域
 const app =  express()
 
 // 静态资源托管
-app.use('/image', express.static('public/image'))
+app.use(express.static('public'))
 // 处理日志
 app.use(morgan('dev'))
 // 解决跨域
@@ -28,7 +29,8 @@ app.use(express.json())
 app.use('/api/blog', blogRouter)
 app.use('/api/user', userRouter)
 app.use('/api', refreshRouter)
-app.use('/api', uploadRouter)
+app.use('/api/upload', uploadRouter)
+app.use('/api/image',imageRouter)
 
 
 // 处理 404
