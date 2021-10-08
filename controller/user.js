@@ -12,13 +12,20 @@ import exec from "../db/connect.js"
 
 // 用户信息获取
 const getUserInfo = (username)=> {
-  let sql = `select avator from userinfo where username = '${username}'`
+  let sql = `select * from userinfo where username = '${username}'`
+
+  return exec(sql)
+}
+
+// 用户信息修改
+const updateUserProfile = (username, profile) => {
+  let { page, phone, introduction, email } = profile
+  let sql = `
+  update userinfo set page = '${page}', phone = '${phone}', introduction = '${introduction}', email = '${email}' where username = '${username}'
+  `
 
   return exec(sql)
 }
 
 
-
-
-
-export { userLogin, getUserInfo }
+export { userLogin, getUserInfo, updateUserProfile }

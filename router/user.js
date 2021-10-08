@@ -2,7 +2,7 @@ import express from 'express'
 import jwt from '../utils/jwt.js'
 
 // 引入controller
-import { userLogin, getUserInfo } from '../controller/user.js'
+import { userLogin, getUserInfo, updateUserProfile } from '../controller/user.js'
 // 引入resModel
 import { SuccessModel, ErrorModel } from '../model/resModel.js'
 // 引入token验证中间件
@@ -32,11 +32,22 @@ router.post('/login',(req, res, next) => {
 // 获取用户信息接口
 router.get('/userInfo', auth, (req, res, next) => {
   let username = req.username
-  // console.log(username)
+  // console.log(req.username)
   getUserInfo(username)
   .then(val => {
     let data = val[0] || {}
     res.send(new SuccessModel(data))
+  })
+})
+
+// 修改用户信息接口
+router.post('/profile', auth, (req, res, next) => {
+  let username = req.username
+  let profile = req.body.profile
+  updateUserProfile(username, profile)
+  .then((val) => {
+    console.log(val)
+    res.send(new SuccessModel('更新成功！'))
   })
 })
 

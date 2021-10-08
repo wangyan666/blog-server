@@ -1,6 +1,8 @@
 import express from 'express'
 import multer from 'multer'
 import { uploadImages } from '../controller/upload.js'
+import { uploadAvatars } from '../controller/setting.js'
+import auth from '../middleware/auth.js'
 let router = express.Router()
 // 博客图片
 const storageBlog = multer.diskStorage({
@@ -26,9 +28,26 @@ const storageMaterial = multer.diskStorage({
     cb(null, fileName)
   }
 })
+
+// 头像
+const storageAvatar = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/avatarImages')
+  },
+  filename: (req, file, cb) => {
+    // 文件后缀
+    const suffix = '.' + file.mimetype.split('/').pop()
+    const fileName = Date.now() + suffix
+    cb(null, fileName)
+  }
+})
+
+
 const uploadBlog = multer({ storage: storageBlog })
 const uploadMaterial = multer({ storage: storageMaterial })
+const uploadAvatar = multer({ storage: storageAvatar })
 
+// 博客内容图片
 router.post('/blogImages', uploadBlog.single('image'), (req, res) => {
   // console.log(req.file)
   const imgUrl = `http://localhost:3000/blogImages/${req.file.filename}`
@@ -41,6 +60,15 @@ router.post('/materialImages', uploadMaterial.single('image'), (req, res) => {
   // console.log(req.file)
   const imgUrl = `http://localhost:3000/materialImages/${req.file.filename}`
   uploadImages(imgUrl) // 存入数据库
+  res.send(imgUrl)
+})
+
+// 头像
+router.post('/AvatarImages', auth, uploadAvatar.single('avatar'), (req, res) => {
+  // console.log(req.file)
+  let username = req.username
+  const imgUrl = `http://localhost:3000/AvatarImages/${req.file.filename}`
+  uploadAvatars(imgUrl, username) // 存入数据库
   res.send(imgUrl)
 })
 

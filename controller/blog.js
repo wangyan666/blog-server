@@ -18,13 +18,14 @@ const getDetail = (id) => {
 }
 
 const newBlog = ( blogData ) => {
-  let { title, content, author, channel } = blogData
+  // console.log(blogData)
+  let { title, content, author, channel, state = 1 } = blogData
   let createTime = Date.now()
   let sql = `
-    insert into blogs (title, content, author, createTime, channel)
-    values ('${title}', '${content}', '${author}', '${createTime}', '${channel}')
+    insert into blogs (title, content, author, createTime, channel, state)
+    values ('${title}', '${content}', '${author}', '${createTime}', '${channel}', '${state}')
   `
-  // console.log(sql)
+  console.log(sql)
   return exec(sql)
 }
 
