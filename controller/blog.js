@@ -19,21 +19,21 @@ const getDetail = (id) => {
 
 const newBlog = ( blogData ) => {
   // console.log(blogData)
-  let { title, content, author, channel, state = 1 } = blogData
+  let { title, content, author, channel, state = 1, cover } = blogData
   let createTime = Date.now()
   let sql = `
-    insert into blogs (title, content, author, createTime, channel, state)
-    values ('${title}', '${content}', '${author}', '${createTime}', '${channel}', '${state}')
+    insert into blogs (title, content, author, createTime, channel, state, cover)
+    values ('${title}', '${content}', '${author}', '${createTime}', '${channel}', '${state}', '${cover}' )
   `
   console.log(sql)
   return exec(sql)
 }
 
 const updateBlog = ( id, blogData ) => {
-  let { title, content, channel } = blogData
+  let { title, content, channel, cover } = blogData
   let createTime = Date.now()
   let sql = `
-    update blogs set title = '${title}', content = '${content}', createTime = '${createTime}', channel = '${channel}' where id = ${id}
+    update blogs set title = '${title}', content = '${content}', createTime = '${createTime}', channel = '${channel}', cover = '${cover}' where id = ${id}
   `
   // console.log(sql)
   return exec(sql)
@@ -43,6 +43,7 @@ const deleteBlog = (id) => {
   let sql = `
     delete from  blogs where id = '${id}'
   `
+  // console.log(sql)
   return exec(sql)
 }
 

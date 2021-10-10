@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path'
 
 // 引入路由
 import blogRouter from './router/blog.js'
@@ -13,6 +14,7 @@ import cors from 'cors' // 跨域
 // import errorHandler from './middleware/errorHandler.js'
 // 创建app
 const app =  express()
+const __dirname = path.resolve()
 
 // 静态资源托管
 app.use(express.static('public'))
@@ -32,6 +34,9 @@ app.use('/api', refreshRouter)
 app.use('/api/upload', uploadRouter)
 app.use('/api/image',imageRouter)
 
+app.get('/',(req, res) => {
+  res.send('hello')
+})
 
 // 处理 404
 app.use((req, res, next) => {

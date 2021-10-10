@@ -4,7 +4,10 @@ const getImages = (page, pageSize, favor) => {
 
   let sql = `select * from images `
   if (favor) sql += `where favor = 1 `
+  // if (page === 0) page = 1
   sql += `LIMIT ${ (page-1) * pageSize }, ${ pageSize }`
+
+  console.log(sql)
   return exec(sql)
 }
 
@@ -23,6 +26,7 @@ const changeFavor = (id) => {
 
 const deleteImage = (id) => {
   let sql = `delete from images where id = ${id} `
+  // console.log(sql)
   return exec(sql)
 }
 
